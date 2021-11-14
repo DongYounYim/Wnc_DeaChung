@@ -3,15 +3,26 @@
 let btn_div = document.getElementById("btn_div");
 let chatting = document.getElementsByClassName("chat")
 let mainDiv = document.getElementById("listDiv");
-
-// for(let i = 0; i < chatting.length; i++) {
-//     chatting[i].addEventListner("click", chat)
-// }
+let memberdiv = document.getElementById("member");
 
 //별점순 / 수강생 수
 //검색 이름 / 분야 
 
+//로그인 정보에 맞게 버튼 활성화.
+
  $( document ).ready(function() {
+    if(localStorage.getItem("id") == null) {
+        let log_in_btn = document.createElement("button");
+        log_in_btn.innerHTML = "로그인";
+        log_in_btn.addEventListener("click", log_in);
+        memberdiv.appendChild(log_in_btn);
+    } else {
+        let mem_id = docuemnt.createElement("span");
+        mem_id.innerHTML = localStorage.getItem("id");
+        memberdiv.appendChild(mem_id);
+        //선생님, 학생, 관리자 확인?
+        //로그아웃 넣을까?
+    }
     db.collection("teachers")
     .get()
     .then((querySnapshot) => {
@@ -160,8 +171,13 @@ function doing_put_star(who, star_data) {
                 })
                 .then(() => {
                     alert("별점주기 완료.");
+                    //page.reload
                 });
             }
         })
     })
+}
+
+function log_in() {
+    open("./login.html");
 }
